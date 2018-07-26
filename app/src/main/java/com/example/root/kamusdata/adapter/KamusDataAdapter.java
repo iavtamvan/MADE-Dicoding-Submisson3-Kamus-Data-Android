@@ -18,17 +18,13 @@ import com.example.root.kamusdata.model.KamusDataModel;
 
 import java.util.ArrayList;
 
-public class KamusAdapter extends RecyclerView.Adapter<KamusAdapter.MyViewHolder> implements Filterable {
+public class KamusDataAdapter extends RecyclerView.Adapter<KamusDataAdapter.MyViewHolder> implements Filterable {
 
     private ArrayList<KamusDataModel> kamusDataModels;
     private ArrayList<KamusDataModel> searchResult;
     private Context context;
 
-//    public KamusAdapter() {
-//    }
-
-
-    public KamusAdapter(ArrayList<KamusDataModel> kamusDataModels, Context context) {
+    public KamusDataAdapter(ArrayList<KamusDataModel> kamusDataModels, Context context) {
         this.kamusDataModels = kamusDataModels;
         this.context = context;
     }

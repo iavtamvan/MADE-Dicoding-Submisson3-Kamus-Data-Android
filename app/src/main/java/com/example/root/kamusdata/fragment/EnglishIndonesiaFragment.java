@@ -13,8 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.root.kamusdata.R;
-import com.example.root.kamusdata.adapter.KamusAdapter;
-import com.example.root.kamusdata.helper.database.KamusHelper;
+import com.example.root.kamusdata.adapter.KamusDataAdapter;
+import com.example.root.kamusdata.helper.database.KamusDataHelper;
 import com.example.root.kamusdata.model.KamusDataModel;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 
@@ -29,8 +29,8 @@ public class EnglishIndonesiaFragment extends Fragment {
     private MaterialSearchBar search;
     private RecyclerView rv;
 
-    private KamusHelper kamusHelper;
-    private KamusAdapter kamusAdapter;
+    private KamusDataHelper kamusDataHelper;
+    private KamusDataAdapter kamusDataAdapter;
 
     private ArrayList<KamusDataModel> kamusDataModels;
 
@@ -48,10 +48,10 @@ public class EnglishIndonesiaFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_blank, container, false);
         initView(view);
         kamusDataModels = new ArrayList<>();
-        kamusHelper = new KamusHelper(getActivity());
-        kamusAdapter = new KamusAdapter(kamusDataModels, getActivity());
+        kamusDataHelper = new KamusDataHelper(getActivity());
+        kamusDataAdapter = new KamusDataAdapter(kamusDataModels, getActivity());
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rv.setAdapter(kamusAdapter);
+        rv.setAdapter(kamusDataAdapter);
 
         search.addTextChangeListener(new TextWatcher() {
             @Override
@@ -61,7 +61,7 @@ public class EnglishIndonesiaFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                kamusAdapter.getFilter().filter(charSequence);
+                kamusDataAdapter.getFilter().filter(charSequence);
             }
 
             @Override
@@ -77,14 +77,14 @@ public class EnglishIndonesiaFragment extends Fragment {
 
     private void loadData(String search) {
         try {
-            kamusHelper.open();
-            kamusDataModels = kamusHelper.getDataALl(English);
+            kamusDataHelper.open();
+            kamusDataModels = kamusDataHelper.getDataALl(English);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            kamusHelper.close();
+            kamusDataHelper.close();
         }
-        kamusAdapter.replaceAll(kamusDataModels);
+        kamusDataAdapter.replaceAll(kamusDataModels);
     }
 
     private void initView(View view) {

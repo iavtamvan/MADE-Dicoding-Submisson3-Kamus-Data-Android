@@ -10,7 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.root.kamusdata.helper.SharedPreference;
-import com.example.root.kamusdata.helper.database.KamusHelper;
+import com.example.root.kamusdata.helper.database.KamusDataHelper;
 import com.example.root.kamusdata.model.KamusDataModel;
 
 import java.io.BufferedReader;
@@ -40,14 +40,14 @@ public class PreloadActivity extends AppCompatActivity {
 
 
     private class LoadDataKamus extends AsyncTask<Void, Integer, Void> {
-        KamusHelper kamusHelper;
+        KamusDataHelper kamusDataHelper;
         SharedPreference sharedPreference;
         double progress;
         double maxprogress = 100;
 
         @Override
         protected void onPreExecute() {
-            kamusHelper = new KamusHelper(PreloadActivity.this);
+            kamusDataHelper = new KamusDataHelper(PreloadActivity.this);
             sharedPreference = new SharedPreference(PreloadActivity.this);
         }
 
@@ -61,20 +61,20 @@ public class PreloadActivity extends AppCompatActivity {
 
                 publishProgress((int) progress);
 
-                kamusHelper.open();
+                kamusDataHelper.open();
 
                 Double progressMaxInsert = 100.0;
                 Double progressDiff = (progressMaxInsert - progress) / (kamusDataEnglish.size() + kamusDataIndonesia.size());
 
-                kamusHelper.insertTransaction(kamusDataEnglish, true);
+                kamusDataHelper.insertTransaction(kamusDataEnglish, true);
                 progress += progressDiff;
                 publishProgress((int) progress);
 
-                kamusHelper.insertTransaction(kamusDataIndonesia, false);
+                kamusDataHelper.insertTransaction(kamusDataIndonesia, false);
                 progress += progressDiff;
                 publishProgress((int) progress);
 
-                kamusHelper.close();
+                kamusDataHelper.close();
                 sharedPreference.setFirstRun(false);
 
                 publishProgress((int) maxprogress);

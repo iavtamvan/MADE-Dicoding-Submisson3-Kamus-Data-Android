@@ -12,7 +12,7 @@ import com.example.root.kamusdata.model.KamusDataModel;
 
 import java.util.ArrayList;
 
-public class KamusHelper {
+public class KamusDataHelper {
     private static String English = Config.DATABASE_TABLE_ENGLISH;
     private static String Indonesia = Config.DATABASE_TABLE_INDONESIA;
 
@@ -21,11 +21,11 @@ public class KamusHelper {
     private SQLiteDatabase database;
 
 
-    public KamusHelper(Context context) {
+    public KamusDataHelper(Context context) {
         this.context = context;
     }
 
-    public KamusHelper open() throws SQLException{
+    public KamusDataHelper open() throws SQLException{
         dbHelper = new DbHelper(context);
         database = dbHelper.getWritableDatabase();
         return this;
