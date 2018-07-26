@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.root.kamusdata.helper.AppPreference;
+import com.example.root.kamusdata.helper.SharedPreference;
 import com.example.root.kamusdata.helper.database.KamusHelper;
 import com.example.root.kamusdata.model.KamusDataModel;
 
@@ -41,20 +41,20 @@ public class PreloadActivity extends AppCompatActivity {
 
     private class LoadData extends AsyncTask<Void, Integer, Void> {
         KamusHelper kamusHelper;
-        AppPreference appPreference;
+        SharedPreference sharedPreference;
         double progress;
         double maxprogress = 100;
 
         @Override
         protected void onPreExecute() {
             kamusHelper = new KamusHelper(PreloadActivity.this);
-            appPreference = new AppPreference(PreloadActivity.this);
+            sharedPreference = new SharedPreference(PreloadActivity.this);
         }
 
         @SuppressWarnings("WrongThread")
         @Override
         protected Void doInBackground(Void... params) {
-            Boolean firstRun = appPreference.getFirstRun();
+            Boolean firstRun = sharedPreference.getFirstRun();
             if (firstRun) {
                 ArrayList<KamusDataModel> kamusEnglish = preLoadData(R.raw.english_indonesia);
                 ArrayList<KamusDataModel> kamusIndonesia = preLoadData(R.raw.indonesia_english);
@@ -79,7 +79,7 @@ public class PreloadActivity extends AppCompatActivity {
                 publishProgress((int) progress);
 
                 kamusHelper.close();
-                appPreference.setFirstRun(false);
+                sharedPreference.setFirstRun(false);
 
                 publishProgress((int) maxprogress);
             } else {

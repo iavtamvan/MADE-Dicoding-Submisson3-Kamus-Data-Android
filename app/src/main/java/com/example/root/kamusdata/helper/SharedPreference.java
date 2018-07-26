@@ -11,17 +11,12 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.example.root.kamusdata.R;
-
-/**
- * Created by omrobbie on 20/10/2017.
- */
-
-public class AppPreference {
+public class SharedPreference {
 
     Context context;
     SharedPreferences prefs;
 
-    public AppPreference(Context context) {
+    public SharedPreference(Context context) {
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
         this.context = context;
     }
