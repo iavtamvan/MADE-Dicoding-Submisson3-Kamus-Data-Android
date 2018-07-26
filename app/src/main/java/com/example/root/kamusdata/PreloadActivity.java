@@ -30,7 +30,7 @@ public class PreloadActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         initView();
 
-        new LoadData().execute();
+        new LoadDataKamus().execute();
     }
 
     private void initView() {
@@ -39,7 +39,7 @@ public class PreloadActivity extends AppCompatActivity {
     }
 
 
-    private class LoadData extends AsyncTask<Void, Integer, Void> {
+    private class LoadDataKamus extends AsyncTask<Void, Integer, Void> {
         KamusHelper kamusHelper;
         SharedPreference sharedPreference;
         double progress;
@@ -56,25 +56,21 @@ public class PreloadActivity extends AppCompatActivity {
         protected Void doInBackground(Void... params) {
             Boolean firstRun = sharedPreference.getFirstRun();
             if (firstRun) {
-                ArrayList<KamusDataModel> kamusEnglish = preLoadData(R.raw.english_indonesia);
-                ArrayList<KamusDataModel> kamusIndonesia = preLoadData(R.raw.indonesia_english);
+                ArrayList<KamusDataModel> kamusDataEnglish = preLoadData(R.raw.english_indonesia);
+                ArrayList<KamusDataModel> kamusDataIndonesia = preLoadData(R.raw.indonesia_english);
 
                 publishProgress((int) progress);
 
-//                try {
-                    kamusHelper.open();
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
+                kamusHelper.open();
 
                 Double progressMaxInsert = 100.0;
-                Double progressDiff = (progressMaxInsert - progress) / (kamusEnglish.size() + kamusIndonesia.size());
+                Double progressDiff = (progressMaxInsert - progress) / (kamusDataEnglish.size() + kamusDataIndonesia.size());
 
-                kamusHelper.insertTransaction(kamusEnglish, true);
+                kamusHelper.insertTransaction(kamusDataEnglish, true);
                 progress += progressDiff;
                 publishProgress((int) progress);
 
-                kamusHelper.insertTransaction(kamusIndonesia, false);
+                kamusHelper.insertTransaction(kamusDataIndonesia, false);
                 progress += progressDiff;
                 publishProgress((int) progress);
 
@@ -86,7 +82,7 @@ public class PreloadActivity extends AppCompatActivity {
                 tvLoad.setVisibility(View.INVISIBLE);
                 pgBar.setVisibility(View.GONE);
                 try {
-                    synchronized (this){
+                    synchronized (this) {
                         this.wait(1000);
                         publishProgress((int) maxprogress);
                     }
@@ -115,8 +111,8 @@ public class PreloadActivity extends AppCompatActivity {
         ArrayList<KamusDataModel> kamusDataModels = new ArrayList<>();
         BufferedReader reader;
         try {
-            Resources res = getResources();
-            InputStream raw_dict = res.openRawResource(data);
+            Resources resources = getResources();
+            InputStream raw_dict = resources.openRawResource(data);
 
             reader = new BufferedReader(new InputStreamReader(raw_dict));
             String line = null;
